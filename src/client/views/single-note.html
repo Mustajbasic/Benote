@@ -1,0 +1,47 @@
+<div id="header" class="full-width"></div>
+<div class="container">
+    <nav class="margin-top-25 light-blue darken-2">
+        <ul class="left">
+            <li><a onclick="Benote.goToOverview()">Back to overview</a></li>
+            <li><a onclick="Benote.notes.create()">Add note</a></li>
+            <li><a onclick="Benote.notes.delete(Benote.getIdOfOpenNote())">Delete</a></li>
+        </ul>
+        <ul class="right">
+            <li><a href="#" data-activates="all-notes-single" class="button-collapse">All notes</a></li>
+        </ul>
+    </nav>
+    <div id="content" class="margin-top-25 content">
+        <div class="note-area">
+            <div class="input-field">
+                    <input placeholder="Note title" id="benote-note-title" type="text" class="">
+                    <label for="benote-note-title">Note title</label>
+            </div>
+            <div class="form-group note-texte-area-parent">
+                <textarea class="materialize-textarea" id="benote-note-text"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ul class="side-nav" id="all-notes-single"></ul>
+
+
+<style>
+    .container {
+        height: calc(100% - 115px);
+    }
+    .content {
+        height: calc(100% - 100px);
+    }
+    .note-area {
+        height: 100%;
+    }
+    .note-texte-area-parent {
+        height: calc(100% - 68px);
+    }
+    #benote-note-text {
+        overflow: auto;
+        height: calc(100% - 50px);
+        max-height: calc(100% - 50px);
+    }
+</style>

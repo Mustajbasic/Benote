@@ -1,0 +1,9 @@
+{
+  "name": "benote",
+  "version": "0.0.1",
+  "main": "main.js",
+  "dependencies": {
+    "hammer": "0.0.5",
+    "jquery": "^3.2.1"
+  }
+}

@@ -1,0 +1,40 @@
+
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+    margin: 0;
+}
+
+.main {
+    height: 100%;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.full-width {
+    width: 100%;
+}
+
+.margin-top-15 {
+    margin-top: 15px;
+}
+
+.margin-top-25 {
+    margin-top: 25px;
+}
