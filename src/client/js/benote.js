@@ -5,6 +5,7 @@ var Benote = (function(){
     var fs = require('fs');
     var path = require('path');
     var webFrame = require('electron').webFrame;
+    var bemu = new Bemu();
     webFrame.setVisualZoomLevelLimits(1, 1);
     webFrame.setLayoutZoomLevelLimits(0, 0);
 
@@ -144,12 +145,17 @@ var Benote = (function(){
     var renderListOverview = function (locationId) {
         var toc = getElement(locationId);
         if(toc) {
-            var container = document.createElement('div');
-            container.setAttribute('class','collection');
+            var container = document.createElement('ul');
+            var listHead = document.createElement('li');
+            listHead.setAttribute('class','list-head');
+            listHead.appendChild(document.createTextNode('Notes'));
+            container.appendChild(listHead);
+
+            container.setAttribute('class','list hoverable');
             for(var i = 0 ; i < globalToC.notes.length ; i++) {
 
-                var listItem = document.createElement('a');
-                listItem.setAttribute('class','collection-item');
+                var listItem = document.createElement('li');
+                listItem.setAttribute('class','list-item');
                 listItem.setAttribute('onclick','Benote.getNote('+globalToC.notes[i].id + ')');
                 
                 listItem.appendChild(document.createTextNode(globalToC.notes[i].name));
@@ -191,7 +197,6 @@ var Benote = (function(){
     var getNote = function(id) {
         private.openNoteId = id;
         renderView('main','single-note', function() {
-            $(".button-collapse").sideNav();
             renderView('header','subviews/header', function() {
                 console.log('Header: OK');
             });
@@ -205,11 +210,11 @@ var Benote = (function(){
                         title.addEventListener('input', _.debounce(function(){notes.saveTitle(id)}, 1000))
                         text.addEventListener('input', _.debounce(function(){notes.saveContent(id)}, 1000))
                         title.value = res.notes[i].name;
-                        Materialize.updateTextFields();
                         get('./data/notes/note' + id + '.txt', function(content) {
                             text.value = content;
 
                         });
+                        bemu.addSideNavigation("all-notes-singless", "bemu-courtain");
                         break;
                     }
                 }
@@ -252,10 +257,7 @@ var Benote = (function(){
     readJSON('data/table-of-contents.json', function(res) {
         globalToC = res;
     });
-
-    $( document ).ready(function(){
-        $('#search-note-modal').modal();
-    })
+    
     return {
         hello: hello,
         getElement: getElement,
@@ -270,6 +272,7 @@ var Benote = (function(){
         getIdOfOpenNote: getIdOfOpenNote,
         goToOverview: goToOverview,
         renderAllNotesSideNav: renderAllNotesSideNav,
-        goToNote: goToNote
+        goToNote: goToNote,
+        bemu: bemu
     };
 })();

@@ -6,36 +6,19 @@
     <title>Benote</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="libs/materializecss/css/materialize.min.css">
+    <!-- <link rel="stylesheet" href="libs/materializecss/css/materialize.min.css"> -->
+    <link rel="stylesheet" href="libs/bemu-ui/bemu.css">
+    <link rel="stylesheet" href="libs/bemu-ui/bemu-colors.css">
   </head>
-  <body>
+  <body class="navbar-is-fixed-with-gap">
+      <div class="sidenav-courtain courtain-hidden hide" id="bemu-courtain"></div>
     <div id="main" class="main">
     </div>
-
-
-    <div id="search-note-modal" class="modal modal-fixed-footer">
-        <div class="modal-content">
-          <h4>Go to note</h4>
-          <div class="input-field col s6">
-              <input id="note-name-search-modal" type="text" class="">
-              <label for="note-name-search-modal">Note name</label>
-            </div>
-        </div>
-        <div class="modal-footer">
-          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">GoTo</a>
-          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Add new</a>
-          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
-        </div>
-      </div>
-
-
   </body>
 
 
 
-  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="libs/materializecss/hammer.min.js"></script>
-  <script src="libs/materializecss/js/materialize.min.js"></script>
+  <script src="libs/bemu-ui/bemu.js"></script>
   <script src="libs/lodash.js"></script>
   <script src="js/benote.js"></script>
   <script src="js/main.js"></script>
