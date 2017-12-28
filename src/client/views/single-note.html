@@ -1,29 +1,51 @@
 <div id="header" class="full-width"></div>
-<div class="container">
-    <nav class="margin-top-25 light-blue darken-2">
-        <ul class="left">
-            <li><a onclick="Benote.goToOverview()">Back to overview</a></li>
-            <li><a onclick="Benote.notes.create()">Add note</a></li>
-            <li><a onclick="Benote.notes.delete(Benote.getIdOfOpenNote())">Delete</a></li>
-        </ul>
-        <ul class="right">
-            <li><a href="#" data-activates="all-notes-single" class="button-collapse">All notes</a></li>
-        </ul>
-    </nav>
-    <div id="content" class="margin-top-25 content">
+<div class="wrapper">
+    <div class="row">
+        <div class="col three-large three-medium three-small">
+            <input type="button" class="button  white-text blue-grey full-width" onclick="Benote.goToOverview()" value="Overview">
+        </div>
+        <div class="col three-large three-medium three-small">
+            <input type="button" class="button  white-text blue-grey full-width" onclick="Benote.notes.create()" value="Add note">
+        </div>
+        <div class="col three-large three-medium three-small">
+            <input type="button" class="button  white-text blue-grey full-width" onclick="Benote.notes.delete(Benote.getIdOfOpenNote())" value="Delete note">
+        </div>
+        <div class="col three-large three-medium three-small">
+            <input type="button" class="button  white-text blue-grey full-width" onclick="Benote.bemu.toggleSideNav()" value="All notes">
+        </div>
+    </div>
+    <div id="content" class="margin-top-15 margin-sides-10 content">
         <div class="note-area">
-            <div class="input-field">
-                    <input placeholder="Note title" id="benote-note-title" type="text" class="">
-                    <label for="benote-note-title">Note title</label>
-            </div>
-            <div class="form-group note-texte-area-parent">
-                <textarea class="materialize-textarea" id="benote-note-text"></textarea>
-            </div>
+                    <small class="input-label">Note title</small>
+                    <input type="text" placeholder="Note title" id="benote-note-title" class="benote-search input" >
+
+                    <small class="input-label">Content</small>
+                
+                <textarea class="input" id="benote-note-text"></textarea>
+  
         </div>
     </div>
 </div>
 
-<ul class="side-nav" id="all-notes-single"></ul>
+<ul class="sissadenav" id="all-notes-single" style="display: none"></ul>
+<div class="sidenav sidenav-hidden" id="all-notes-singless">
+    <div class="sidenav-header darker-2 blue-grey"> <img src="images/logo.png" alt="" class="sidenav-logo">
+        <div class="sidenav-header-info white-text">
+            <h3>@Mustajbasic</h3>
+            <h5>Belmin Mustajbašić</h5> </div>
+        <div class="sidenav-content">
+            <input type="button" class="button full-width white" value="Home">
+            <input type="button" class="button full-width white" value="About">
+            <input type="button" class="button full-width white" value="Profile">
+            <input type="button" class="button full-width white" value="Settings">
+            <input type="button" class="button full-width white" value="Logout">
+            <input type="button" class="button full-width white" onclick="Benote.bemu.toggleSideNav()" value="Close Side Nav">
+        </div>
+    </div>
+</div>
+
+
+
 
 
 <style>
@@ -31,17 +53,20 @@
         height: calc(100% - 115px);
     }
     .content {
-        height: calc(100% - 100px);
+        height: calc(100% - 130px);
     }
     .note-area {
         height: 100%;
+        width: calc(100% - 20px);
+        padding: 0 10px;
     }
     .note-texte-area-parent {
         height: calc(100% - 68px);
     }
     #benote-note-text {
         overflow: auto;
-        height: calc(100% - 50px);
-        max-height: calc(100% - 50px);
+        height: calc(100% - 45px);
+        max-height: 100%;
+        resize: none;
     }
 </style>

@@ -1,12 +1,17 @@
-
-<nav class="light-blue darken-3">
-    <div class="nav-wrapper">
-      <!-- <a href="#" class="brand-logo">Benote</a> -->
-      <ul class="left">
-            <li onclick="Benote.notes.create()"><a>New note</a></li>
-    </ul>
-      <ul class="right">
-        <li><a href="sass.html">Settings</a></li>
-      </ul>
-    </div>
-  </nav>
+<div class="navbar fixed blue-grey darker-1 white-text">
+<div class="navigation-large">
+  <div class="left">
+      <a href="#" onclick="Benote.notes.create()" class="nav-item light">New note</a>
+      <div class="nav-item light dropdown noselect" id="test-dropdown" onclick="globalBemu.toggleDropdown('test-dropdown')">Dropdown
+          <ul class="dropdown-list hide">
+              <li class="arrow-up"> <i class="material-icons">arrow_drop_up</i> </li>
+              <li class="dropdown-element">Element 1</li>
+              <li class="dropdown-element">Element 2</li>
+              <li class="dropdown-element">Element 3</li>
+          </ul>
+      </div>
+  </div>
+  <div class="right">
+      <div class="nav-item light">Settings</div>
+  </div>
+  </div>
