@@ -1,6 +1,6 @@
 var Benote = (function(){
     var globalToC;
-    var private = {};
+    var local = {};
     var notes = {};
     var fs = require('fs');
     var path = require('path');
@@ -23,10 +23,10 @@ var Benote = (function(){
             lastEditOn: tmpTime.getTime(),
 
         });
-        fs.writeFile('client/data/notes/note'+globalToC.lastId+'.txt', 'Just now, we have created this file', function (err) {
+        fs.writeFile(__dirname + '/data/notes/note'+globalToC.lastId+'.txt', '', function (err) {
 
             if (err) throw err;
-            fs.writeFile('client/data/table-of-contents.json', JSON.stringify(globalToC), function (err) {
+            fs.writeFile(__dirname + '/data/table-of-contents.json', JSON.stringify(globalToC), function (err) {
                 if (err) throw err;
                 getNote(globalToC.lastId);
             });
@@ -42,9 +42,9 @@ var Benote = (function(){
                 break;
             }
         }
-        fs.unlink('client/data/notes/note'+id+'.txt', function(err) {
+        fs.unlink(__dirname + '/data/notes/note'+id+'.txt', function(err) {
             if (err) throw err;
-            fs.writeFile('client/data/table-of-contents.json', JSON.stringify(globalToC), function (err) {
+            fs.writeFile(__dirname + '/data/table-of-contents.json', JSON.stringify(globalToC), function (err) {
                 if (err) throw err;
                 goToOverview();
             });
@@ -57,7 +57,7 @@ var Benote = (function(){
         for(var i = 0  ; i < globalToC.notes.length ;  i++) {
             if(id === globalToC.notes[i].id) {
                 globalToC.notes[i].name = newTitle;
-                fs.writeFile('client/data/table-of-contents.json', JSON.stringify(globalToC), function (err) {
+                fs.writeFile(__dirname + '/data/table-of-contents.json', JSON.stringify(globalToC), function (err) {
                     if (err) throw err;
                 });
                 break;
@@ -67,7 +67,7 @@ var Benote = (function(){
 
     notes.saveContent = function(id) {
         var content = getElement("benote-note-text").value;
-        fs.writeFile('client/data/notes/note'+id+'.txt', content, function (err) {
+        fs.writeFile(__dirname + '/data/notes/note'+id+'.txt', content, function (err) {
             if (err) throw err;
         });
     }
@@ -114,7 +114,7 @@ var Benote = (function(){
     var renderTableOfContents = function (locationId) {
         var toc = getElement(locationId);
         if(toc) {
-            readJSON('data/table-of-contents.json', function(res) {
+            readJSON(__dirname + '/data/table-of-contents.json', function(res) {
                 var container = document.createElement('div');
                 container.setAttribute('class', 'list-group');
                 for(var i = 0 ; i < res.notes.length ; i++) {
@@ -188,21 +188,21 @@ var Benote = (function(){
     
     var renderView = function (where, view, next) {
         var main = getElement(where);
-        get('./views/' + view + '.html', function (res) {
+        get(__dirname + '/views/' + view + '.html', function (res) {
             main.innerHTML = res;
             next();
         });
     };
 
     var getNote = function(id) {
-        private.openNoteId = id;
+        local.openNoteId = id;
         renderView('main','single-note', function() {
             renderView('header','subviews/header', function() {
                 console.log('Header: OK');
             });
             console.log('Single-note: OK');
             renderAllNotesSideNav('all-notes-single');
-            readJSON('data/table-of-contents.json', function(res) {
+            readJSON(__dirname + '/data/table-of-contents.json', function(res) {
                 for(var i = 0  ; i < res.notes.length ; i++) {
                     if(res.notes[i].id === id) {
                         var title = getElement('benote-note-title');
@@ -210,7 +210,7 @@ var Benote = (function(){
                         title.addEventListener('input', _.debounce(function(){notes.saveTitle(id)}, 1000))
                         text.addEventListener('input', _.debounce(function(){notes.saveContent(id)}, 1000))
                         title.value = res.notes[i].name;
-                        get('./data/notes/note' + id + '.txt', function(content) {
+                        get(__dirname + '/data/notes/note' + id + '.txt', function(content) {
                             text.value = content;
 
                         });
@@ -230,7 +230,7 @@ var Benote = (function(){
     }
 
     var getIdOfOpenNote = function() {
-        return private.openNoteId;
+        return local.openNoteId;
     }
 
     var goToOverview = function() {
@@ -245,16 +245,16 @@ var Benote = (function(){
         });
     }
 
-    private.keyboardEvents = function(e) {
+    local.keyboardEvents = function(e) {
         var evtobj = window.event? event : e
         if (evtobj.keyCode == 83 && evtobj.ctrlKey) {
             $('#search-note-modal').modal('open');
         }
 
     }
-    document.onkeydown = private.keyboardEvents;
+    document.onkeydown = local.keyboardEvents;
 
-    readJSON('data/table-of-contents.json', function(res) {
+    readJSON(__dirname + '/data/table-of-contents.json', function(res) {
         globalToC = res;
     });
     

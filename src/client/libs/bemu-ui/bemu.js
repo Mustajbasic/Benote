@@ -1,51 +1,51 @@
 
 function Bemu() {
-    let dropdownList = [];
-    let dialogList = [];
-    let dropdownListOnlyIds = [];
-    let sidenav = {};
-    let public = {};
-    let numberOfShownDropdowns = 0;
-    let body = document.getElementsByTagName('body')[0];
-    let closeDropdown = function (id) {
-        for (let i = 0; i < dropdownList.length; i++) {
+    var dropdownList = [];
+    var dialogList = [];
+    var dropdownListOnlyIds = [];
+    var sidenav = {};
+    var expose = {};
+    var numberOfShownDropdowns = 0;
+    var body = document.getElementsByTagName('body')[0];
+    var closeDropdown = function (id) {
+        for (var i = 0; i < dropdownList.length; i++) {
             if (dropdownList[i].getId() == id) {
                 dropdownList[i].close();
             }
         }
     };
-    public.addSideNavigation = function (id, courtain) {
+    expose.addSideNavigation = function (id, courtain) {
         sidenav = BemuSideNavigation(id, courtain);
 
     };
-    public.toggleSideNav = function () {
+    expose.toggleSideNav = function () {
         sidenav.toggle();
     };
-    public.addDialog = function (id, courtain) {
+    expose.addDialog = function (id, courtain) {
         dialogList.push(BemuDialog(id, courtain));
     };
-    public.toggleDialog = function (id) {
+    expose.toggleDialog = function (id) {
         
-        for (let i = 0; i < dialogList.length; i++) {
+        for (var i = 0; i < dialogList.length; i++) {
             if (dialogList[i].getId() == id) {
                 body.classList.toggle('noscroll');
                 dialogList[i].toggle();
             }
         }
     };
-    public.addDropdown = function (id) {
+    expose.addDropdown = function (id) {
         dropdownList.push(BemuDropdown(id));
         dropdownListOnlyIds.push(id);
         window.onclick = function (event) {
-            for (let i = 0; i < dropdownListOnlyIds.length; i++) {
+            for (var i = 0; i < dropdownListOnlyIds.length; i++) {
                 if (!event.target.matches('#' + dropdownListOnlyIds[i])) {
                     closeDropdown(dropdownListOnlyIds[i]);
                 }
             }
         };
     };
-    public.toggleDropdown = function (id) {
-        for (let i = 0; i < dropdownList.length; i++) {
+    expose.toggleDropdown = function (id) {
+        for (var i = 0; i < dropdownList.length; i++) {
             if (dropdownList[i].getId() == id) {
                 if (dropdownList[i].toggleDropdown()) {
                     numberOfShownDropdowns++;
@@ -55,9 +55,9 @@ function Bemu() {
             }
         }
     };
-    public.closeAllDropdowns = function () {
+    expose.closeAllDropdowns = function () {
         if (numberOfShownDropdowns > 0) {
-            for (let i = 0; i < dropdownList.length; i++) {
+            for (var i = 0; i < dropdownList.length; i++) {
                 if (dropdownList[i].isShown()) {
                     dropdownList[i].toggleDropdown(dropdownList[i].getId());
                 }
@@ -65,16 +65,16 @@ function Bemu() {
             numberOfShownDropdowns = 0;
         }
     };
-    return public;
+    return expose;
 }
 
 function BemuDropdown(idParam) {
-    let id = idParam;
-    let dropdown = document.getElementById(id);
-    let dropdownInner = dropdown.getElementsByClassName('dropdown-list')[0];
-    let dropdownShownStatus = false;
-    let public = {};
-    public.toggleDropdown = function () {
+    var id = idParam;
+    var dropdown = document.getElementById(id);
+    var dropdownInner = dropdown.getElementsByClassName('dropdown-list')[0];
+    var dropdownShownStatus = false;
+    var expose = {};
+    expose.toggleDropdown = function () {
         if (dropdownShownStatus) {
             dropdownInner.className = "dropdown-list hide";
             dropdownShownStatus = false;
@@ -84,31 +84,31 @@ function BemuDropdown(idParam) {
         }
         return dropdownShownStatus;
     };
-    public.close = function () {
+    expose.close = function () {
         dropdownShownStatus = false;
         dropdownInner.className = "dropdown-list hide";
     };
-    public.isShown = function () {
+    expose.isShown = function () {
         return dropdownShownStatus;
     };
-    public.getId = function () {
+    expose.getId = function () {
         return id;
     };
-    return public;
+    return expose;
 }
 
 function BemuSideNavigation(idParam, courtainParam) {
-    let id = idParam;
-    let courtainId = courtainParam;
-    let sidenav = document.getElementById(id);
-    let courtain = document.getElementById(courtainId);
-    let isOpen = false;
+    var id = idParam;
+    var courtainId = courtainParam;
+    var sidenav = document.getElementById(id);
+    var courtain = document.getElementById(courtainId);
+    var isOpen = false;
 
-    let public = {};
+    var expose = {};
     courtain.onclick = function () {
-        public.toggle();
+        expose.toggle();
     };
-    public.toggle = function () {
+    expose.toggle = function () {
         sidenav.classList.toggle('sidenav-hidden');
 
         if (isOpen) {
@@ -122,24 +122,24 @@ function BemuSideNavigation(idParam, courtainParam) {
 
     };
 
-    return public;
+    return expose;
 }
 
 function BemuDialog(idParam, courtainParam) {
-    let id = idParam;
-    let courtainId = courtainParam;
-    let dialog = document.getElementById(id);
-    let courtain = document.getElementById(courtainId);
-    let isOpen = false;
+    var id = idParam;
+    var courtainId = courtainParam;
+    var dialog = document.getElementById(id);
+    var courtain = document.getElementById(courtainId);
+    var isOpen = false;
 
-    let public = {};
-    public.getId = function () {
+    var expose = {};
+    expose.getId = function () {
         return id;
     };
-    public.getCourtainId = function () {
+    expose.getCourtainId = function () {
         return courtainId;
     };
-    public.toggle = function () {
+    expose.toggle = function () {
         dialog.classList.toggle('dialog-hidden');
 
         if (isOpen) {
@@ -152,5 +152,5 @@ function BemuDialog(idParam, courtainParam) {
 
 
     };
-    return public;
+    return expose;
 }
