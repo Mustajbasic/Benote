@@ -403,6 +403,7 @@ ul.list {
     border-radius: 3px;
     margin: 5px 0;
     padding: 0;
+    cursor: pointer;
 }
 
 ul.list .list-head {
@@ -443,7 +444,7 @@ ul.list .list-item {
 }
 
 .navbar-is-fixed-with-gap {
-    margin-top: 75px !important;
+    margin-top: 50px !important;
 }
 
 .navbar .left {
@@ -582,6 +583,8 @@ ul.list .list-item {
 .sidenav-content {
     width: calc(100% - 20px);
     padding: 10px;
+    height: calc(100% - 170px);
+    overflow-y: auto;
 }
 
 .sidenav-courtain {

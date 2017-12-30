@@ -2,7 +2,7 @@
 <div class="overview-wrapper">
     <div id="search" class="full-width"></div>
     
-    <div id="listOfNotes"></div>
+    <div id="listOfNotes" class="overview-list-of-notes"></div>
 </div>
 
 <style>
@@ -11,9 +11,15 @@
         width: calc(100% - 30px);
         max-width: 600px;
         margin: 0 auto;
+        height: 100%;
     }
 
     .overview-add-new-note {
         margin: 10px 0;
+    }
+
+    .overview-list-of-notes {
+        height: calc(100% - 50px);
+        overflow: auto;
     }
 </style>

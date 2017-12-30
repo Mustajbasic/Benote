@@ -2,13 +2,14 @@
 <div class="wrapper">
     <div class="row">
         <div class="col three-large three-medium three-small">
-            <input type="button" class="button  white-text blue-grey full-width" onclick="Benote.goToOverview()" value="Overview">
+            <button class="button white-text blue-grey full-width button-padding-ajdust" onclick="Benote.goToOverview()">
+                <i class="material-icons overview-icon-height">keyboard_backspace</i>
+            </button>
         </div>
         <div class="col three-large three-medium three-small">
-            <input type="button" class="button  white-text blue-grey full-width" onclick="Benote.notes.create()" value="Add note">
         </div>
         <div class="col three-large three-medium three-small">
-            <input type="button" class="button  white-text blue-grey full-width" onclick="Benote.notes.delete(Benote.getIdOfOpenNote())" value="Delete note">
+            <input type="button" class="button  white-text blue-grey full-width" onclick="Benote.bemu.toggleDialog('confirm-delete-dialog')" value="Delete note">
         </div>
         <div class="col three-large three-medium three-small">
             <input type="button" class="button  white-text blue-grey full-width" onclick="Benote.bemu.toggleSideNav()" value="All notes">
@@ -29,22 +30,44 @@
 
 <ul class="sissadenav" id="all-notes-single" style="display: none"></ul>
 <div class="sidenav sidenav-hidden" id="all-notes-singless">
-    <div class="sidenav-header darker-2 blue-grey"> <img src="images/logo.png" alt="" class="sidenav-logo">
+    <div class="sidenav-header darker-2 blue-grey"> <img src="logo.png" alt="" class="sidenav-logo">
         <div class="sidenav-header-info white-text">
-            <h3>@Mustajbasic</h3>
-            <h5>Belmin Mustajbašić</h5> </div>
-        <div class="sidenav-content">
+            <h3>Benote</h3>
+            <h5>Take a note</h5> </div>
+        
+    </div>
+    <div class="sidenav-content" id="benote-sidenav-content">
+            <input type="button" class="button full-width white" onclick="Benote.bemu.toggleSideNav()" value="Close Side Nav">
+            
             <input type="button" class="button full-width white" value="Home">
             <input type="button" class="button full-width white" value="About">
             <input type="button" class="button full-width white" value="Profile">
             <input type="button" class="button full-width white" value="Settings">
             <input type="button" class="button full-width white" value="Logout">
-            <input type="button" class="button full-width white" onclick="Benote.bemu.toggleSideNav()" value="Close Side Nav">
         </div>
-    </div>
 </div>
 
-
+<div class="popup-dialog dialog-hidden narrow" id="confirm-delete-dialog">
+        <div class="dialog-header blue-grey darker-1 white-text">
+            <h3 class="dialog-title">Are you sure?</h3>
+            <a onclick="Benote.bemu.toggleDialog('confirm-delete-dialog')" class="close-dialog">
+                <i class="material-icons noselect">close</i>
+            </a>
+        </div>
+        <div class="dialog-content">
+            <p>This action cannot be undone.</p>
+            <div class="row">
+                <div class="col six-large six-medium six-small">
+                    <button class="button white-text blue-grey darker-1 full-width" 
+                        onclick="Benote.bemu.toggleDialog('confirm-delete-dialog')">Cancel</button>
+                </div>
+                <div class="col six-large six-medium six-small">
+                    <button class="button white-text blue-grey darker-1 full-width" 
+                        onclick="Benote.bemu.toggleDialog('confirm-delete-dialog');Benote.notes.delete(Benote.getIdOfOpenNote())">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -68,5 +91,13 @@
         height: calc(100% - 45px);
         max-height: 100%;
         resize: none;
+    }
+
+    .overview-icon-height {
+        font-size: 20px;
+    }
+
+    .button-padding-ajdust {
+        padding: 7px 15px !important;
     }
 </style>
