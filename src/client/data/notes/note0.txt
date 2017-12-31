@@ -1,0 +1,13 @@
+All notes are saved as .txt files. You don't have to save a thing, everything is autosaves just half a second after you stop typing.
+
+Currently supported shortcuts:
+________________________________________________________
+CRTL + O : Go to overview
+CTRL + N : New note
+CTRL + S : Search
+   As soon as you his CTRL + S you can start typing. 
+   If you hit ENTER the first open Note will be opened
+   If you hit ESCAPE the search will close
+_________________________________________________________
+
+As soon as you open a note, you can start typing.

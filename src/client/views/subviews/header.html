@@ -4,6 +4,14 @@
       <a href="#" onclick="Benote.notes.create()" class="nav-item light">New note</a>
   </div>
   <div class="right">
-      <div class="nav-item light">Settings</div>
+      <div class="nav-item dropdown light" id="header-settings-dropdown"
+      onclick="Benote.bemu.toggleDropdown('header-settings-dropdown')">Settings
+        <ul class="dropdown-list hide">
+            <li class="arrow-up"> <i class="material-icons">arrow_drop_up</i> </li>
+            <!-- <li class="dropdown-element">Colors</li> -->
+            <li class="dropdown-element" onclick="Benote.bemu.toggleDialog('about-dialog')">About</li>
+            <!-- <li class="dropdown-element">Reset</li> -->
+        </ul>
+      </div>
   </div>
   </div>

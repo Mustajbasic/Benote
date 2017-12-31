@@ -31,7 +31,6 @@ function Bemu() {
         
         for (var i = 0; i < dialogList.length; i++) {
             if (dialogList[i].getId() == id) {
-                console.log('Let\s toggle this shit');
                 body.classList.toggle('noscroll');
                 dialogList[i].toggle();
             }
@@ -144,10 +143,7 @@ function BemuDialog(idParam, courtainParam) {
         return courtainId;
     };
     expose.toggle = function () {
-        console.log('pozvan');
         dialog.classList.toggle('dialog-hidden');
-        console.log('New classlist is:')
-        console.log(dialog.classList);
         if (isOpen) {
             courtain.classList.toggle('courtain-hidden');
             setTimeout(courtain.classList.toggle('hide'), 100);

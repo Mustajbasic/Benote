@@ -6,7 +6,11 @@ let win;
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({width: 800, height: 700, minWidth: 600, minHeight: 600})
+  win = new BrowserWindow({width: 800, 
+    height: 700, 
+    minWidth: 600, 
+    minHeight: 600,
+    icon : "./client/benote.ico"})
 
   // and load the index.html of the app.
   win.loadURL(url.format({
@@ -15,7 +19,7 @@ function createWindow () {
     slashes: true
   }));
 
-  win.webContents.openDevTools();
+  //win.webContents.openDevTools();
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time

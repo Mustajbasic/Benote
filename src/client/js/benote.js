@@ -8,15 +8,17 @@ var Benote = (function(){
     var bemu = new Bemu();
     webFrame.setVisualZoomLevelLimits(1, 1);
     webFrame.setLayoutZoomLevelLimits(0, 0);
-
     local.isDialogAndSideNavAdded = false;
     var hello = function() {
         readJSON(function(res) {
-            console.log(res);
             globalToC = res;
         });
+        bemu.addDialog("about-dialog", "bemu-dialog-courtain");
         goToOverview();
     }
+
+    local.isGlobalSearchShown = false;
+    local.idOfFirstNote = -1;
 
     notes.create = function() {
         var tmpTime = new Date();
@@ -77,7 +79,6 @@ var Benote = (function(){
 
     var readJSON = function(callback) {
         var put = path.join(__dirname,'/data/table-of-contents.json');
-        console.log(put);
         fs.readFile(put,function(err,res){
             if(err) throw err;
             callback(JSON.parse(res));
@@ -197,17 +198,17 @@ var Benote = (function(){
         local.openNoteId = id;
         renderView('main','single-note', function() {
             renderView('header','subviews/header', function() {
-                console.log('Header: OK');
+                bemu.addDropdown("header-settings-dropdown");
             });
-            console.log('Single-note: OK');
             renderAllNotesSideNav('benote-sidenav-content');
             readJSON(function(res) {
                 for(var i = 0  ; i < res.notes.length ; i++) {
                     if(res.notes[i].id === id) {
                         var title = getElement('benote-note-title');
                         var text = getElement('benote-note-text');
-                        title.addEventListener('input', _.debounce(function(){notes.saveTitle(id)}, 1000))
-                        text.addEventListener('input', _.debounce(function(){notes.saveContent(id)}, 1000))
+                        text.focus();
+                        title.addEventListener('input', _.debounce(function(){notes.saveTitle(id)}, 500))
+                        text.addEventListener('input', _.debounce(function(){notes.saveContent(id)}, 500))
                         title.value = res.notes[i].name;
                         get(path.join(__dirname + '/data/notes/note' + id + '.txt'), function(content) {
                             text.value = content;
@@ -218,6 +219,7 @@ var Benote = (function(){
                 }
                 bemu.clearDialogs();
                 bemu.addSideNavigation("all-notes-singless", "bemu-sidenav-courtain");
+                bemu.addDialog("about-dialog", "bemu-dialog-courtain");
                 bemu.addDialog("confirm-delete-dialog", "bemu-dialog-courtain");
                 if(!local.isDialogAndSideNavAdded) {
                     
@@ -255,6 +257,7 @@ var Benote = (function(){
             });
     
             renderView('header','subviews/header', function() {
+                bemu.addDropdown("header-settings-dropdown");
             });
             
             renderListOverview("listOfNotes");
@@ -277,7 +280,6 @@ var Benote = (function(){
             }
         }
         renderNewOverview(newGlobalToc);
-        console.log(newGlobalToc);
     }
 
     var renderNewOverview  = function(notes) {
@@ -302,11 +304,84 @@ var Benote = (function(){
         } 
         toc.appendChild(container);
     }
+    var closeGlobalSearch = function() {
+        local.isGlobalSearchShown = false;
+        var globalSearch = getElement('global-search');
+        var globalSearchCourtain = getElement('bemu-global-search-courtain');
+        globalSearch.classList.add('global-search-hidden');
+        globalSearchCourtain.classList.add('hide');
+        globalSearchCourtain.classList.add('courtain-hidden');
+    }
 
+    var onGlobalSearchInput = function () {
+        var search = getElement('global-search-input').value;
+
+        var regStr = '.*';
+        for(var i = 0 ; i < search.length ; i++) {
+            if(search[i] == ' ') continue;
+            regStr += '[' + search[i].toLowerCase() + search[i].toUpperCase() + ']' + '.*';
+        }
+        var regex = new RegExp(regStr);
+        var newGlobalToc = [];
+        for(var i = 0 ; i < globalToC.notes.length ; i++) {
+            if(regex.test(globalToC.notes[i].name)) {
+                newGlobalToc.push(globalToC.notes[i]);
+            }
+        }
+        if(newGlobalToc.length>0) {
+            local.idOfFirstNote = newGlobalToc[0].id;
+            var result = getElement('global-search-result');
+            result.innerHTML = '';
+            var container = document.createElement('ul');
+            container.setAttribute('class', 'white');
+        
+            container.setAttribute('class','list hoverable');
+            
+            for(var i = 0 ; i < newGlobalToc.length ; i++) {
+                if(i > 10) break;
+                var listItem = document.createElement('li');
+                listItem.setAttribute('class','list-item white');
+                listItem.setAttribute('onclick','Benote.closeGlobalSearch();Benote.getNote('+newGlobalToc[i].id + ')');
+                
+                listItem.appendChild(document.createTextNode(newGlobalToc[i].name));
+                container.appendChild(listItem);
+            } 
+            
+            result.appendChild(container);
+        } else {
+            local.idOfFirstNote = -1;
+        }
+        
+    };
     local.keyboardEvents = function(e) {
         var evtobj = window.event? event : e
         if (evtobj.keyCode == 83 && evtobj.ctrlKey) {
-            $('#search-note-modal').modal('open');
+            local.isGlobalSearchShown = true;
+            var globalSearch = getElement('global-search');
+            var globalSearchInput = getElement('global-search-input');
+            var result = getElement('global-search-result');
+            result.innerHTML = '';
+            globalSearchInput.value = '';
+            globalSearchInput
+            .addEventListener('input', _.debounce(onGlobalSearchInput, 200))
+            var globalSearchCourtain = getElement('bemu-global-search-courtain');
+            globalSearch.classList.remove('global-search-hidden');
+            globalSearchCourtain.classList.remove('hide');
+            globalSearchCourtain.classList.remove('courtain-hidden');
+            globalSearchInput.focus();
+        } else if (evtobj.keyCode == 79 && evtobj.ctrlKey) {
+            goToOverview();
+        } else if (evtobj.keyCode == 78 && evtobj.ctrlKey) {
+            notes.create();
+        } else if(evtobj.keyCode == 27) {
+            if(local.isGlobalSearchShown) {
+                closeGlobalSearch();
+            }
+        } else if(evtobj.keyCode == 13) {
+            if(local.isGlobalSearchShown && local.idOfFirstNote != -1) {
+                closeGlobalSearch();
+                getNote(local.idOfFirstNote);
+            }
         }
 
     }
@@ -329,6 +404,7 @@ var Benote = (function(){
         goToNote: goToNote,
         confirmDelete: confirmDelete,
         overviewSearch: overviewSearch,
+        closeGlobalSearch: closeGlobalSearch,
         bemu: bemu
     };
 })();

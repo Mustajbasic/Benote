@@ -13,11 +13,56 @@
   <body class="navbar-is-fixed-with-gap">
       <div class="sidenav-courtain courtain-hidden hide" id="bemu-sidenav-courtain"></div>
       <div class="sidenav-courtain courtain-hidden hide" id="bemu-dialog-courtain"></div>
+      <div class="sidenav-courtain courtain-hidden hide" id="bemu-global-search-courtain"></div>
     <div id="main" class="main">
     </div>
+
+    <div class="popup-dialog dialog-hidden narrow" id="about-dialog">
+      <div class="dialog-header blue-grey darker-1 white-text">
+          <h3 class="dialog-title">About Benote</h3>
+          <a onclick="Benote.bemu.toggleDialog('about-dialog')" class="close-dialog">
+              <i class="material-icons noselect">close</i>
+          </a>
+      </div>
+      <div class="dialog-content justify">
+          <p>Benote is a small text editor for taking quick notes created by 
+            <a href="" style="text-decoration: underline;">Belmin Mustajbasic</a>. 
+            This is Benote version 2 as the first draft was forgoten in Belmin's black 
+            hole folder which sucks in all his unfinished projects.
+          </p>
+
+          <p>Benote is created using Vanilla JS, CSS with 
+            <a href="" style="text-decoration: underline;">Bemu-UI</a> on top of it. It is build with Electron.
+          </p>
+          
+      </div>
+
+      
+  </div>
+  <div id="global-search" class="global-search-hidden global-search">
+      <input type="text" name="" id="global-search-input" class="input" placeholder="search...">
+      <div id="global-search-result">
+      </div>
+    </div>
+
+
   </body>
 
 
+  <style>
+    .global-search {
+      position: absolute;
+      top:15%;
+      left: 50%;
+      width: 80%;
+      max-width: 500px;
+      transform: translate(-50%,0);
+      z-index: 1000;
+    }
+    .global-search-hidden {
+      display: none;
+    }
+  </style>
 
   <script src="libs/bemu-ui/bemu.js"></script>
   <script src="libs/lodash.js"></script>
