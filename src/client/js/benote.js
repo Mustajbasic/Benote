@@ -353,6 +353,38 @@ var Benote = (function(){
         }
         
     };
+
+    var exportNotes = function(){
+        const {dialog} = require('electron').remote;
+        var archiver = require('archiver');
+        
+        dialog.showOpenDialog({properties: ['openFile', 'openDirectory']},
+            function(where){
+                console.log(path.join(where[0], '/benote.zip'));
+                var output = fs.createWriteStream(path.join(where[0], '/benote.zip'));
+                var archive = archiver('zip');
+
+                output.on('close', function () {
+                    console.log(archive.pointer() + ' total bytes');
+                    console.log('archiver has been finalized and the output file descriptor has closed.');
+                });
+
+                archive.on('error', function(err){
+                    throw err;
+                });
+
+                archive.pipe(output);
+                archive.directory(path.join(__dirname,'/data'), 'data');
+                archive.finalize();
+                console.log(__dirname);
+                console.log(where);
+            }
+        );
+        
+        
+        console.log('Export');
+    };
+
     local.keyboardEvents = function(e) {
         var evtobj = window.event? event : e
         if (evtobj.keyCode == 83 && evtobj.ctrlKey) {
@@ -405,6 +437,7 @@ var Benote = (function(){
         confirmDelete: confirmDelete,
         overviewSearch: overviewSearch,
         closeGlobalSearch: closeGlobalSearch,
+        export: exportNotes,
         bemu: bemu
     };
 })();
