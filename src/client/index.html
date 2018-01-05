@@ -36,6 +36,28 @@
           </p>
           
       </div>
+      </div>
+
+      <div class="popup-dialog dialog-hidden narrow" id="reset-dialog">
+        <div class="dialog-header red darker-2 white-text">
+            <h3 class="dialog-title">Warning: RESET</h3>
+            <a onclick="Benote.bemu.toggleDialog('reset-dialog')" class="close-dialog">
+                <i class="material-icons noselect">close</i>
+            </a>
+        </div>
+        <div class="dialog-content justify">
+            <h3>Careful, this action will delete ALL notes!</h3>
+            <p>Deleted notes can't be recovered except if import earlier exported notes.</p>
+            <div class="row">
+              <div class="col six-large six-medium six-small">
+                <input onclick="Benote.bemu.toggleDialog('reset-dialog')" type="button" class="button full-width" value="Cancel">
+              </div>
+              <div class="col six-large six-medium six-small">
+                <input onclick="Benote.resetAndGoToOverView();" type="button" class="button danger full-width" value="Reset">
+              </div>
+            </div>     
+        </div>
+        
 
       
   </div>

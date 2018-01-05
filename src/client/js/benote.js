@@ -14,6 +14,7 @@ var Benote = (function(){
             globalToC = res;
         });
         bemu.addDialog("about-dialog", "bemu-dialog-courtain");
+        bemu.addDialog("reset-dialog", "bemu-dialog-courtain");
         goToOverview();
     }
 
@@ -220,6 +221,7 @@ var Benote = (function(){
                 bemu.clearDialogs();
                 bemu.addSideNavigation("all-notes-singless", "bemu-sidenav-courtain");
                 bemu.addDialog("about-dialog", "bemu-dialog-courtain");
+                bemu.addDialog("reset-dialog", "bemu-dialog-courtain");
                 bemu.addDialog("confirm-delete-dialog", "bemu-dialog-courtain");
                 if(!local.isDialogAndSideNavAdded) {
                     
@@ -354,19 +356,16 @@ var Benote = (function(){
         
     };
 
-    var exportNotes = function(){
+    var exportNotes = function() {
         const {dialog} = require('electron').remote;
         var archiver = require('archiver');
         
         dialog.showOpenDialog({properties: ['openFile', 'openDirectory']},
             function(where){
-                console.log(path.join(where[0], '/benote.zip'));
                 var output = fs.createWriteStream(path.join(where[0], '/benote.zip'));
                 var archive = archiver('zip');
 
                 output.on('close', function () {
-                    console.log(archive.pointer() + ' total bytes');
-                    console.log('archiver has been finalized and the output file descriptor has closed.');
                 });
 
                 archive.on('error', function(err){
@@ -376,13 +375,52 @@ var Benote = (function(){
                 archive.pipe(output);
                 archive.directory(path.join(__dirname,'/data'), 'data');
                 archive.finalize();
-                console.log(__dirname);
-                console.log(where);
             }
         );
-        
-        
-        console.log('Export');
+    };
+
+    var resetAndGoToOverView  = function() {
+        reset(function(){
+            var AdmZip = require('adm-zip');
+            var zip = new AdmZip(path.join(__dirname, '/fresh-copy.zip'));
+            zip.extractAllTo('./client', true);
+            readJSON(function(res){
+                globalToC = res;
+                bemu.toggleDialog('reset-dialog');
+                goToOverview();
+            })
+        })
+    };
+
+    var reset = function(next) {
+        var rimraf = require('rimraf');
+        rimraf(path.join(__dirname,'/data'),function(){
+            next();
+        })
+    };
+
+    var importNotes = function() {
+        const {dialog} = require('electron').remote;
+        var AdmZip = require('adm-zip');
+        dialog.showOpenDialog({ filters: [
+
+            { name: 'Benoze Zip', extensions: ['zip'] }
+         
+           ]},
+            function(where){
+                var zip = new AdmZip(where[0]);
+                reset(function(){
+                    zip.extractAllTo('./client', true);
+                    readJSON(function(res){
+                        globalToC = res;
+                        goToOverview();
+                    })
+                    
+                });
+                
+            }
+        );
+        console.log('Import');
     };
 
     local.keyboardEvents = function(e) {
@@ -438,6 +476,8 @@ var Benote = (function(){
         overviewSearch: overviewSearch,
         closeGlobalSearch: closeGlobalSearch,
         export: exportNotes,
+        import: importNotes,
+        resetAndGoToOverView: resetAndGoToOverView,
         bemu: bemu
     };
 })();
